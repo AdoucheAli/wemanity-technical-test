@@ -1,10 +1,18 @@
 package com.gildedrose;
 
-import static org.junit.Assert.*;
+import static com.gildedrose.GildedRose.AGED_BRIE;
+import static com.gildedrose.GildedRose.BACKSTAGE;
+import static com.gildedrose.GildedRose.CONJURED;
+import static com.gildedrose.GildedRose.SULFURAS;
+import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import static com.gildedrose.GildedRose.*;
 
 public class GildedRoseTest {
 
@@ -12,31 +20,35 @@ public class GildedRoseTest {
 
 	private final static int SULFURAS_QUALITY = 80;
 	
-	private GildedRose app = new GildedRose();
-	private Item[] items;
+	private GildedRose app;
+	
+	@Before
+    public void before() throws Exception {
+		app = new GildedRose();
+    }
 	
 	@After
     public void after() throws Exception {
-		items = null;
+		app = null;
     }
 
 	@Test
 	public void should_neverAltersQualityAndSellIn_when_sulfuras() {
 		int firstSellIn = 0;
 		int secondSellIn = -1;
-		
-		items = new Item[] { new Item(SULFURAS, firstSellIn, SULFURAS_QUALITY), new Item(SULFURAS, secondSellIn, SULFURAS_QUALITY) };
 
-		app.setItems(items);
+		app.addItem(new Item(SULFURAS, firstSellIn, SULFURAS_QUALITY));
+		app.addItem(new Item(SULFURAS, secondSellIn, SULFURAS_QUALITY));
+		
 		app.updateQuality();
 		
-		assertEquals(SULFURAS, app.getItem(0).name);
+		assertThat(app.getItem(0).getName()).isEqualTo(SULFURAS);
 		
-		assertEquals(SULFURAS_QUALITY, app.getItem(0).quality);
-		assertEquals(SULFURAS_QUALITY, app.getItem(1).quality);
+		assertThat(app.getItem(0).getQuality()).isEqualTo(SULFURAS_QUALITY);
+		assertThat(app.getItem(1).getQuality()).isEqualTo(SULFURAS_QUALITY);
 
-		assertEquals(firstSellIn, app.getItem(0).sellIn);
-		assertEquals(secondSellIn, app.getItem(1).sellIn);
+		assertThat(app.getItem(0).getSellIn()).isEqualTo(firstSellIn);
+		assertThat(app.getItem(1).getSellIn()).isEqualTo(secondSellIn);
 	}
 
 	@Test
@@ -47,14 +59,13 @@ public class GildedRoseTest {
 		int initialAgedBrieSellIn = 2;
 		int expectedAgedBrieSellIn = initialAgedBrieSellIn - 1;
 		
-		items = new Item[] { new Item(AGED_BRIE, initialAgedBrieSellIn, initialAgedBrieQuality) };
-
-		app.setItems(items);
+		app.addItem(new Item(AGED_BRIE, initialAgedBrieSellIn, initialAgedBrieQuality));
+		
 		app.updateQuality();
 		
-		assertEquals(AGED_BRIE, app.getItem(0).name);
-		assertEquals(expectedAgedBrieQuality, app.getItem(0).quality);
-		assertEquals(expectedAgedBrieSellIn, app.getItem(0).sellIn);
+		assertEquals(AGED_BRIE, app.getItem(0).getName());
+		assertEquals(expectedAgedBrieQuality, app.getItem(0).getQuality());
+		assertEquals(expectedAgedBrieSellIn, app.getItem(0).getSellIn());
 	}
 
 	@Test
@@ -62,13 +73,12 @@ public class GildedRoseTest {
 		int initialAgedBrieQuality = 50;
 		int expectedAgedBrieQuality = initialAgedBrieQuality;
 		
-		items = new Item[] { new Item(AGED_BRIE, 2, initialAgedBrieQuality) };
-
-		app.setItems(items);
+		app.addItem(new Item(AGED_BRIE, 2, initialAgedBrieQuality));
+		
 		app.updateQuality();
 		
-		assertEquals(AGED_BRIE, app.getItem(0).name);
-		assertEquals(expectedAgedBrieQuality, app.getItem(0).quality);
+		assertEquals(AGED_BRIE, app.getItem(0).getName());
+		assertEquals(expectedAgedBrieQuality, app.getItem(0).getQuality());
 	}
 
 	@Test
@@ -76,13 +86,12 @@ public class GildedRoseTest {
 		int initialAgedBrieQuality = 2;
 		int expectedAgedBrieQuality = initialAgedBrieQuality + 2;
 		
-		items = new Item[] { new Item(AGED_BRIE, -1, initialAgedBrieQuality) };
-
-		app.setItems(items);
+		app.addItem(new Item(AGED_BRIE, -1, initialAgedBrieQuality));
+		
 		app.updateQuality();
 		
-		assertEquals(AGED_BRIE, app.getItem(0).name);
-		assertEquals(expectedAgedBrieQuality, app.getItem(0).quality);
+		assertEquals(AGED_BRIE, app.getItem(0).getName());
+		assertEquals(expectedAgedBrieQuality, app.getItem(0).getQuality());
 	}
 
 	@Test
@@ -93,14 +102,13 @@ public class GildedRoseTest {
 		int initialBackstageSellIn = 20;
 		int expectedBackstageSellIn = initialBackstageSellIn - 1;
 		
-		items = new Item[] { new Item(BACKSTAGE, initialBackstageSellIn, initialBackstageQuality) };
-
-		app.setItems(items);
+		app.addItem(new Item(BACKSTAGE, initialBackstageSellIn, initialBackstageQuality));
+		
 		app.updateQuality();
 		
-		assertEquals(BACKSTAGE, app.getItem(0).name);
-		assertEquals(expectedBackstageQuality, app.getItem(0).quality);
-		assertEquals(expectedBackstageSellIn, app.getItem(0).sellIn);
+		assertEquals(BACKSTAGE, app.getItem(0).getName());
+		assertEquals(expectedBackstageQuality, app.getItem(0).getQuality());
+		assertEquals(expectedBackstageSellIn, app.getItem(0).getSellIn());
 	}
 
 	@Test
@@ -108,13 +116,12 @@ public class GildedRoseTest {
 		int initialBackstageQuality = 50;
 		int expectedBackstageQuality = initialBackstageQuality;
 		
-		items = new Item[] { new Item(BACKSTAGE, 20, initialBackstageQuality) };
-
-		app.setItems(items);
+		app.addItem(new Item(BACKSTAGE, 20, initialBackstageQuality));
+		
 		app.updateQuality();
 		
-		assertEquals(BACKSTAGE, app.getItem(0).name);
-		assertEquals(expectedBackstageQuality, app.getItem(0).quality);
+		assertEquals(BACKSTAGE, app.getItem(0).getName());
+		assertEquals(expectedBackstageQuality, app.getItem(0).getQuality());
 	}
 
 	@Test
@@ -122,15 +129,14 @@ public class GildedRoseTest {
 		int initialBackstageQuality = 16;
 		int expectedBackstageQuality = initialBackstageQuality + 2;
 		
-		items = new Item[] { new Item(BACKSTAGE, 10, initialBackstageQuality),
-				new Item(BACKSTAGE, 6, initialBackstageQuality) };
-
-		app.setItems(items);
+		app.addItem(new Item(BACKSTAGE, 10, initialBackstageQuality));
+		app.addItem(new Item(BACKSTAGE, 6, initialBackstageQuality));
+		
 		app.updateQuality();
 		
-		assertEquals(BACKSTAGE, app.getItem(0).name);
-		assertEquals(expectedBackstageQuality, app.getItem(0).quality);
-		assertEquals(expectedBackstageQuality, app.getItem(1).quality);
+		assertEquals(BACKSTAGE, app.getItem(0).getName());
+		assertEquals(expectedBackstageQuality, app.getItem(0).getQuality());
+		assertEquals(expectedBackstageQuality, app.getItem(1).getQuality());
 	}
 
 	@Test
@@ -138,29 +144,27 @@ public class GildedRoseTest {
 		int initialBackstageQuality = 15;
 		int expectedBackstageQuality = initialBackstageQuality + 3;
 		
-		items = new Item[] { new Item(BACKSTAGE, 5, initialBackstageQuality),
-				new Item(BACKSTAGE, 1, initialBackstageQuality) };
-
-		app.setItems(items);
+		app.addItem(new Item(BACKSTAGE, 5, initialBackstageQuality));
+		app.addItem(new Item(BACKSTAGE, 1, initialBackstageQuality));
+		
 		app.updateQuality();
 		
-		assertEquals(BACKSTAGE, app.getItem(0).name);
-		assertEquals(expectedBackstageQuality, app.getItem(0).quality);
-		assertEquals(expectedBackstageQuality, app.getItem(1).quality);
+		assertEquals(BACKSTAGE, app.getItem(0).getName());
+		assertEquals(expectedBackstageQuality, app.getItem(0).getQuality());
+		assertEquals(expectedBackstageQuality, app.getItem(1).getQuality());
 	}
 
 	@Test
-	public void should_dropQualityTo0_when_backstageAndAfterTheCancert() {
+	public void should_dropQualityTo0_when_backstageAndAfterTheConcert() {
 		int initialBackstageQuality = 50;
 		int expectedBackstageQuality = 0;
 		
-		items = new Item[] { new Item(BACKSTAGE, -1, initialBackstageQuality) };
-
-		app.setItems(items);
+		app.addItem(new Item(BACKSTAGE, -1, initialBackstageQuality));
+		
 		app.updateQuality();
 		
-		assertEquals(BACKSTAGE, app.getItem(0).name);
-		assertEquals(expectedBackstageQuality, app.getItem(0).quality);
+		assertEquals(BACKSTAGE, app.getItem(0).getName());
+		assertEquals(expectedBackstageQuality, app.getItem(0).getQuality());
 	}
 
 	@Test
@@ -171,14 +175,13 @@ public class GildedRoseTest {
 		int initialOtherItemSellIn = 10;
 		int expectedOtherItemSellIn = initialOtherItemSellIn - 1;
 		
-		items = new Item[] { new Item(OTHER_ITEM, initialOtherItemSellIn, initialOtherItemQuality) };
+		app.addItem(new Item(OTHER_ITEM, initialOtherItemSellIn, initialOtherItemQuality));
 
-		app.setItems(items);
 		app.updateQuality();
 		
-		assertEquals(OTHER_ITEM, app.getItem(0).name);
-		assertEquals(expectedOtherItemQuality, app.getItem(0).quality);
-		assertEquals(expectedOtherItemSellIn, app.getItem(0).sellIn);
+		assertEquals(OTHER_ITEM, app.getItem(0).getName());
+		assertEquals(expectedOtherItemQuality, app.getItem(0).getQuality());
+		assertEquals(expectedOtherItemSellIn, app.getItem(0).getSellIn());
 	}
 
 	@Test
@@ -186,12 +189,92 @@ public class GildedRoseTest {
 		int initialOtherItemQuality = 10;
 		int expectedOtherItemQuality = initialOtherItemQuality - 2;
 		
-		items = new Item[] { new Item(OTHER_ITEM, -1, initialOtherItemQuality) };
+		app.addItem(new Item(OTHER_ITEM, -1, initialOtherItemQuality));
 
-		app.setItems(items);
 		app.updateQuality();
 		
-		assertEquals(OTHER_ITEM, app.getItem(0).name);
-		assertEquals(expectedOtherItemQuality, app.getItem(0).quality);
+		assertEquals(OTHER_ITEM, app.getItem(0).getName());
+		assertEquals(expectedOtherItemQuality, app.getItem(0).getQuality());
+	}
+	
+	@Test
+	public void should_decreaseInQuality_when_conjured() {
+		int initialQuality = 10;
+
+		app.addItem(new Item(OTHER_ITEM, 10, initialQuality));
+		app.addItem(new Item(CONJURED, 10, initialQuality));
+		
+		app.updateQuality();
+		
+		assertEquals(OTHER_ITEM, app.getItem(0).getName());
+		assertEquals(CONJURED, app.getItem(1).getName());
+
+		int expectedOtherItemQuality = initialQuality - 1;
+		int expectedConjuredQuality = initialQuality - 2;
+		
+		assertEquals(expectedOtherItemQuality, app.getItem(0).getQuality());
+		assertEquals(expectedConjuredQuality, app.getItem(1).getQuality());
+	}
+	
+	@Test
+	public void should_decreaseInQuality_when_conjuredAndSellInPassed() {
+		int initialQuality = 10;
+
+		app.addItem(new Item(OTHER_ITEM, -1, initialQuality));
+		app.addItem(new Item(CONJURED, -1, initialQuality));
+		
+		app.updateQuality();
+		
+		assertEquals(OTHER_ITEM, app.getItem(0).getName());
+		assertEquals(CONJURED, app.getItem(1).getName());
+
+		int expectedOtherItemQuality = initialQuality - 2;
+		int expectedConjuredQuality = initialQuality - 4;
+		
+		assertEquals(expectedOtherItemQuality, app.getItem(0).getQuality());
+		assertEquals(expectedConjuredQuality, app.getItem(1).getQuality());
+	}
+	
+	@Test
+	public void should_compare_with_legacy() {
+		ItemLegacy[] itemsLegacy = new ItemLegacy[] {
+                new ItemLegacy("+5 Dexterity Vest", 10, 20),
+                new ItemLegacy("Aged Brie", 2, 0),
+                new ItemLegacy("Elixir of the Mongoose", 5, 7),
+                new ItemLegacy("Sulfuras, Hand of Ragnaros", 0, 80),
+                new ItemLegacy("Sulfuras, Hand of Ragnaros", -1, 80),
+                new ItemLegacy("Backstage passes to a TAFKAL80ETC concert", 15, 20),
+                new ItemLegacy("Backstage passes to a TAFKAL80ETC concert", 10, 49),
+                new ItemLegacy("Backstage passes to a TAFKAL80ETC concert", -1, 49),
+                new ItemLegacy("Backstage passes to a TAFKAL80ETC concert", 5, 49)};
+
+		List<Item> items = Arrays.asList(
+				new Item("+5 Dexterity Vest", 10, 20),
+                new Item("Aged Brie", 2, 0),
+                new Item("Elixir of the Mongoose", 5, 7),
+                new Item("Sulfuras, Hand of Ragnaros", 0, 80),
+                new Item("Sulfuras, Hand of Ragnaros", -1, 80),
+                new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
+                new Item("Backstage passes to a TAFKAL80ETC concert", 10, 49),
+                new Item("Backstage passes to a TAFKAL80ETC concert", -1, 49),
+                new Item("Backstage passes to a TAFKAL80ETC concert", 5, 49));
+		
+		GildedRoseLegacy appLegacy = new GildedRoseLegacy(itemsLegacy);
+	
+		for (Item item : items) {
+			app.addItem(item);
+		}
+		
+		int days = 100;
+		for (int i = 0; i < days; i++) {
+			appLegacy.updateQuality();
+			app.updateQuality();
+		}
+		
+		for (int i = 0; i < items.size(); i++) {
+			assertEquals(appLegacy.items[i].name, app.getItem(i).getName());
+			assertEquals(appLegacy.items[i].quality, app.getItem(i).getQuality());
+			assertEquals(appLegacy.items[i].sellIn, app.getItem(i).getSellIn());
+		}
 	}
 }
