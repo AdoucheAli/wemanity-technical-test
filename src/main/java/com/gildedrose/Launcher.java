@@ -26,8 +26,8 @@ public class Launcher {
 		if (args.length > 0) {
 			try {
 				days = Integer.parseInt(args[0]) + 1;
-			}catch (IllegalArgumentException ex) {
-				days = 2;
+			}catch (NumberFormatException ex) {
+				throw new RuntimeException(args[0] + " is not a number !!");
 			}
 		}
 
