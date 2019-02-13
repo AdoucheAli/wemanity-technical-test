@@ -10,6 +10,9 @@ class GildedRose {
 	public static final String AGED_BRIE = "Aged Brie";
 	public static final String CONJURED = "Conjured Mana Cake";
 	
+	public static final int QUALITY_MAX = 50;
+	public static final int QUALITY_MIN = 0;
+	
 	private List<Item> items;
 
 	public GildedRose() {
