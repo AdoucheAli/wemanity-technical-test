@@ -268,15 +268,14 @@ public class GildedRoseTest {
 		}
 	}
 	
-	private void assertItem(Item item, String name, int quality, int sellIn) {
-		assertThat(item.getName()).isEqualTo(name);
-		assertThat(item.getQuality()).isEqualTo(quality);
-		assertThat(item.getSellIn()).isEqualTo(sellIn);
+	private void assertItem(Item item, String expectedName, int expectedQuality, int expectedSellIn) {
+		assertThat(item.getName()).isEqualTo(expectedName);
+		assertThat(item.getQuality()).isEqualTo(expectedQuality);
+		assertThat(item.getSellIn()).isEqualTo(expectedSellIn);
 	}
 	
-	private void assertItem(Item item, String name, int quality) {
-		assertThat(item.getName()).isEqualTo(name);
-		assertThat(item.getQuality()).isEqualTo(quality);
-		
+	private void assertItem(Item item, String expectedName, int expectedQuality) {
+		assertThat(item.getName()).isEqualTo(expectedName);
+		assertThat(item.getQuality()).isEqualTo(expectedQuality);
 	}
 }
