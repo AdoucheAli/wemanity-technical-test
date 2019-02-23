@@ -16,7 +16,9 @@ import org.junit.Test;
 
 public class GildedRoseTest {
 
-	private final static String OTHER_ITEM = "Elixir of the Mongoose";
+	private static final String DEXTERITY_VEST = "+5 Dexterity Vest";
+
+	private final static String ELIXIR = "Elixir of the Mongoose";
 
 	private final static int SULFURAS_QUALITY = 80;
 	
@@ -42,13 +44,8 @@ public class GildedRoseTest {
 		
 		app.updateQuality();
 		
-		assertThat(app.getItem(0).getName()).isEqualTo(SULFURAS);
-		
-		assertThat(app.getItem(0).getQuality()).isEqualTo(SULFURAS_QUALITY);
-		assertThat(app.getItem(1).getQuality()).isEqualTo(SULFURAS_QUALITY);
-
-		assertThat(app.getItem(0).getSellIn()).isEqualTo(firstSellIn);
-		assertThat(app.getItem(1).getSellIn()).isEqualTo(secondSellIn);
+		assertItem(app.getItem(0), SULFURAS, SULFURAS_QUALITY, firstSellIn);
+		assertItem(app.getItem(1), SULFURAS, SULFURAS_QUALITY, secondSellIn);
 	}
 
 	@Test
@@ -63,9 +60,7 @@ public class GildedRoseTest {
 		
 		app.updateQuality();
 		
-		assertEquals(AGED_BRIE, app.getItem(0).getName());
-		assertEquals(expectedAgedBrieQuality, app.getItem(0).getQuality());
-		assertEquals(expectedAgedBrieSellIn, app.getItem(0).getSellIn());
+		assertItem(app.getItem(0), AGED_BRIE, expectedAgedBrieQuality, expectedAgedBrieSellIn);
 	}
 
 	@Test
@@ -77,8 +72,7 @@ public class GildedRoseTest {
 		
 		app.updateQuality();
 		
-		assertEquals(AGED_BRIE, app.getItem(0).getName());
-		assertEquals(expectedAgedBrieQuality, app.getItem(0).getQuality());
+		assertItem(app.getItem(0), AGED_BRIE, expectedAgedBrieQuality);
 	}
 
 	@Test
@@ -90,8 +84,7 @@ public class GildedRoseTest {
 		
 		app.updateQuality();
 		
-		assertEquals(AGED_BRIE, app.getItem(0).getName());
-		assertEquals(expectedAgedBrieQuality, app.getItem(0).getQuality());
+		assertItem(app.getItem(0), AGED_BRIE, expectedAgedBrieQuality);
 	}
 
 	@Test
@@ -106,9 +99,7 @@ public class GildedRoseTest {
 		
 		app.updateQuality();
 		
-		assertEquals(BACKSTAGE, app.getItem(0).getName());
-		assertEquals(expectedBackstageQuality, app.getItem(0).getQuality());
-		assertEquals(expectedBackstageSellIn, app.getItem(0).getSellIn());
+		assertItem(app.getItem(0), BACKSTAGE, expectedBackstageQuality, expectedBackstageSellIn);		
 	}
 
 	@Test
@@ -120,8 +111,7 @@ public class GildedRoseTest {
 		
 		app.updateQuality();
 		
-		assertEquals(BACKSTAGE, app.getItem(0).getName());
-		assertEquals(expectedBackstageQuality, app.getItem(0).getQuality());
+		assertItem(app.getItem(0), BACKSTAGE, expectedBackstageQuality);
 	}
 
 	@Test
@@ -134,9 +124,8 @@ public class GildedRoseTest {
 		
 		app.updateQuality();
 		
-		assertEquals(BACKSTAGE, app.getItem(0).getName());
-		assertEquals(expectedBackstageQuality, app.getItem(0).getQuality());
-		assertEquals(expectedBackstageQuality, app.getItem(1).getQuality());
+		assertItem(app.getItem(0), BACKSTAGE, expectedBackstageQuality);
+		assertItem(app.getItem(1), BACKSTAGE, expectedBackstageQuality);
 	}
 
 	@Test
@@ -149,9 +138,8 @@ public class GildedRoseTest {
 		
 		app.updateQuality();
 		
-		assertEquals(BACKSTAGE, app.getItem(0).getName());
-		assertEquals(expectedBackstageQuality, app.getItem(0).getQuality());
-		assertEquals(expectedBackstageQuality, app.getItem(1).getQuality());
+		assertItem(app.getItem(0), BACKSTAGE, expectedBackstageQuality);
+		assertItem(app.getItem(1), BACKSTAGE, expectedBackstageQuality);
 	}
 
 	@Test
@@ -163,8 +151,7 @@ public class GildedRoseTest {
 		
 		app.updateQuality();
 		
-		assertEquals(BACKSTAGE, app.getItem(0).getName());
-		assertEquals(expectedBackstageQuality, app.getItem(0).getQuality());
+		assertItem(app.getItem(0), BACKSTAGE, expectedBackstageQuality);
 	}
 
 	@Test
@@ -175,13 +162,11 @@ public class GildedRoseTest {
 		int initialOtherItemSellIn = 10;
 		int expectedOtherItemSellIn = initialOtherItemSellIn - 1;
 		
-		app.addItem(new Item(OTHER_ITEM, initialOtherItemSellIn, initialOtherItemQuality));
+		app.addItem(new Item(ELIXIR, initialOtherItemSellIn, initialOtherItemQuality));
 
 		app.updateQuality();
 		
-		assertEquals(OTHER_ITEM, app.getItem(0).getName());
-		assertEquals(expectedOtherItemQuality, app.getItem(0).getQuality());
-		assertEquals(expectedOtherItemSellIn, app.getItem(0).getSellIn());
+		assertItem(app.getItem(0), ELIXIR, expectedOtherItemQuality, expectedOtherItemSellIn);
 	}
 
 	@Test
@@ -189,75 +174,74 @@ public class GildedRoseTest {
 		int initialOtherItemQuality = 10;
 		int expectedOtherItemQuality = initialOtherItemQuality - 2;
 		
-		app.addItem(new Item(OTHER_ITEM, -1, initialOtherItemQuality));
+		app.addItem(new Item(ELIXIR, -1, initialOtherItemQuality));
 
 		app.updateQuality();
 		
-		assertEquals(OTHER_ITEM, app.getItem(0).getName());
-		assertEquals(expectedOtherItemQuality, app.getItem(0).getQuality());
+		assertItem(app.getItem(0), ELIXIR, expectedOtherItemQuality);
 	}
 	
 	@Test
 	public void should_decreaseInQuality_when_conjured() {
 		int initialQuality = 10;
 
-		app.addItem(new Item(OTHER_ITEM, 10, initialQuality));
+		app.addItem(new Item(ELIXIR, 10, initialQuality));
 		app.addItem(new Item(CONJURED, 10, initialQuality));
 		
 		app.updateQuality();
 		
-		assertEquals(OTHER_ITEM, app.getItem(0).getName());
+		assertEquals(ELIXIR, app.getItem(0).getName());
 		assertEquals(CONJURED, app.getItem(1).getName());
 
 		int expectedOtherItemQuality = initialQuality - 1;
 		int expectedConjuredQuality = initialQuality - 2;
 		
-		assertEquals(expectedOtherItemQuality, app.getItem(0).getQuality());
-		assertEquals(expectedConjuredQuality, app.getItem(1).getQuality());
+		assertItem(app.getItem(0), ELIXIR, expectedOtherItemQuality);
+		assertItem(app.getItem(1), CONJURED, expectedConjuredQuality);
 	}
 	
 	@Test
 	public void should_decreaseInQuality_when_conjuredAndSellInPassed() {
 		int initialQuality = 10;
 
-		app.addItem(new Item(OTHER_ITEM, -1, initialQuality));
+		app.addItem(new Item(ELIXIR, -1, initialQuality));
 		app.addItem(new Item(CONJURED, -1, initialQuality));
 		
 		app.updateQuality();
 		
-		assertEquals(OTHER_ITEM, app.getItem(0).getName());
+		assertEquals(ELIXIR, app.getItem(0).getName());
 		assertEquals(CONJURED, app.getItem(1).getName());
 
 		int expectedOtherItemQuality = initialQuality - 2;
 		int expectedConjuredQuality = initialQuality - 4;
 		
-		assertEquals(expectedOtherItemQuality, app.getItem(0).getQuality());
-		assertEquals(expectedConjuredQuality, app.getItem(1).getQuality());
+		assertItem(app.getItem(0), ELIXIR, expectedOtherItemQuality);
+		assertItem(app.getItem(1), CONJURED, expectedConjuredQuality);
 	}
 	
 	@Test
 	public void should_compare_with_legacy() {
 		ItemLegacy[] itemsLegacy = new ItemLegacy[] {
-                new ItemLegacy("+5 Dexterity Vest", 10, 20),
-                new ItemLegacy("Aged Brie", 2, 0),
-                new ItemLegacy("Elixir of the Mongoose", 5, 7),
-                new ItemLegacy("Sulfuras, Hand of Ragnaros", 0, 80),
-                new ItemLegacy("Sulfuras, Hand of Ragnaros", -1, 80),
-                new ItemLegacy("Backstage passes to a TAFKAL80ETC concert", 15, 20),
-                new ItemLegacy("Backstage passes to a TAFKAL80ETC concert", 10, 49),
-                new ItemLegacy("Backstage passes to a TAFKAL80ETC concert", -1, 49),
-                new ItemLegacy("Backstage passes to a TAFKAL80ETC concert", 5, 49)};
+                new ItemLegacy(DEXTERITY_VEST, 10, 20),
+                new ItemLegacy(AGED_BRIE, 2, 0),
+                new ItemLegacy(ELIXIR, 5, 7),
+                new ItemLegacy(SULFURAS, 0, 80),
+                new ItemLegacy(SULFURAS, -1, 80),
+                new ItemLegacy(BACKSTAGE, 15, 20),
+                new ItemLegacy(BACKSTAGE, 10, 49),
+                new ItemLegacy(BACKSTAGE, -1, 49),
+                new ItemLegacy(BACKSTAGE, 5, 49)};
 
 		List<Item> items = Arrays.asList(
-				new Item("+5 Dexterity Vest", 10, 20),
-                new Item("Aged Brie", 2, 0),
-                new Item("Elixir of the Mongoose", 5, 7),
-                new Item("Sulfuras, Hand of Ragnaros", 0, 80),
-                new Item("Sulfuras, Hand of Ragnaros", -1, 80),
-                new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
-                new Item("Backstage passes to a TAFKAL80ETC concert", 10, 49),
-                new Item("Backstage passes to a TAFKAL80ETC concert", -1, 49),
-                new Item("Backstage passes to a TAFKAL80ETC concert", 5, 49));
+				new Item(DEXTERITY_VEST, 10, 20),
+                new Item(AGED_BRIE, 2, 0),  
+                new Item(ELIXIR, 5, 7), 
+                new Item(SULFURAS, 0, 80),  
+                new Item(SULFURAS, -1, 80), 
+                new Item(BACKSTAGE, 15, 20),
+                new Item(BACKSTAGE, 10, 49),
+                new Item(BACKSTAGE, -1, 49),
+                new Item(BACKSTAGE, 5, 49));
 		
 		GildedRoseLegacy appLegacy = new GildedRoseLegacy(itemsLegacy);
 	
@@ -271,10 +255,28 @@ public class GildedRoseTest {
 			app.updateQuality();
 		}
 		
+		String expectedName = null;
+		int expectedQuality;
+		int expectedSellIn;
+		
 		for (int i = 0; i < items.size(); i++) {
-			assertEquals(appLegacy.items[i].name, app.getItem(i).getName());
-			assertEquals(appLegacy.items[i].quality, app.getItem(i).getQuality());
-			assertEquals(appLegacy.items[i].sellIn, app.getItem(i).getSellIn());
+			expectedName = appLegacy.items[i].name;
+			expectedQuality = appLegacy.items[i].quality;
+			expectedSellIn = appLegacy.items[i].sellIn;
+			
+			assertItem(app.getItem(i), expectedName,expectedQuality, expectedSellIn);
 		}
+	}
+	
+	private void assertItem(Item item, String name, int quality, int sellIn) {
+		assertThat(item.getName()).isEqualTo(name);
+		assertThat(item.getQuality()).isEqualTo(quality);
+		assertThat(item.getSellIn()).isEqualTo(sellIn);
+	}
+	
+	private void assertItem(Item item, String name, int quality) {
+		assertThat(item.getName()).isEqualTo(name);
+		assertThat(item.getQuality()).isEqualTo(quality);
+		
 	}
 }
